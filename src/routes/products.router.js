@@ -5,7 +5,8 @@ const router = Router()
 const productsManager = new ProductsManager()
 
 router.get("/:limit?/:page?/:query?/:sort?", async (req, res) => {
-    const products = await productsManager.getProducts(req.query)
+    const currentUrl = req.protocol + "://" + req.get("host") + req.originalUrl
+    const products = await productsManager.getProducts(req.query, currentUrl)
     res.json({status: "success", data: products})
 })
 
