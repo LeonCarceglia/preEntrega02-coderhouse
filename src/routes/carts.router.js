@@ -1,28 +1,7 @@
-// import Carts from "../dao/manager/filesystem/Carts.js"
 import CartsManager from "../dao/manager/db/carts.js"
 import {Router} from "express"
 
 const router = Router()
-/* 
-const cart = new Carts()
-
-router.post("/", (req, res) => { // Agrega un carro vacio
-    cart.addCart()
-    return res.status(201).json({ success: "Cart created" })
-})
-
-router.get ("/:cId", (req, res) => { // Devuelve los productos del carro con el ID especificado
-    const { cId } = req.params
-    const products = cart.getProductsCart(cId)
-    return res.status(200).json(products)
-})
-router.post("/:cId/product/:pId", (req, res) =>{ // Agrega un producto al carrito con el Id asignado
-    const ids = req.params
-    const { quantity } = req.body
-    cart.addProductCart(ids.cId, ids.pId, quantity)
-    return res.status(201).json({ success: "Product added" })
-}) */
-
 const cartsManager = new CartsManager()
 
 router.post("/", async (req,res) =>{
@@ -42,16 +21,36 @@ router.get("/:id", async (req,res) =>{
     res.json({status: "ok", data: cart})
 })
 
-router.put("/:cId/product/:pId", async (req, res) =>{
+router.post("/:cId/product/:pId", async (req, res) =>{
     const ids = req.params
     const {quantity} = req.body
-    await cartsManager.addProductToCart(ids.cId, ids.pId, quantity)
-    res.status(201).json({status: "ok", success: "Product added"})
+    const newCart = await cartsManager.addProductToCart(ids.cId, ids.pId, quantity)
+    res.status(201).json({status: "ok", success: newCart})
 })
 
-router.delete("/:id", async (req,res) => {
-    const {id} = req.params
-    await cartsManager.deleteCart(id)
+router.delete("/:cid/products/:pid", async (req,res) => {
+    const ids = req.params
+    await cartsManager.deleteProduct(ids)
+    res.sendStatus(204)
+})
+
+router.put("/:cid", async (req, res) => {
+    const {cid} = req.params
+    const products = req.body
+    const cartUpdated = await cartsManager.updateCart(cid, products)
+    res.json({status: "ok", data: cartUpdated})
+})
+
+router.put("/:cid/products/:pid", async (req, res) =>{
+    const ids = req.params
+    const {quantity} = req.body
+    const cartUpdated = await cartsManager.updateProductQuantity(ids, quantity)
+    res.json({status: "ok", data: cartUpdated})
+})
+
+router.delete("/:cid", async (req,res) =>{
+    const {cid} = req.params
+    await cartsManager.deleteProducts(cid)
     res.sendStatus(204)
 })
 

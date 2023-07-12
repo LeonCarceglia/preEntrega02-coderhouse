@@ -1,8 +1,7 @@
 import mongoose from "mongoose"
 
-const cartCollection = "cart"
+const cartCollection = "carts"
 const cartSchema = new mongoose.Schema({
-    products: {
         type: [
             {
                 product:{
@@ -11,9 +10,7 @@ const cartSchema = new mongoose.Schema({
                 },
                 quantity: Number
             }
-        ],
-        default: []
-    }
+        ]
 })
 
 const cartModel = mongoose.model(cartCollection, cartSchema)

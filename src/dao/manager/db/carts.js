@@ -1,4 +1,5 @@
 import cartModel from "../../models/cart.js"
+import productModel from "../../models/product.js"
 
 export default class CartsManager{
 
@@ -8,14 +9,15 @@ export default class CartsManager{
 
     getCart = (id) =>{
         return cartModel.findById(id)
+        .populate("type.product", "_id title descritpon price")
     }
 
-    createCart = (Cart) =>{
-        return cartModel.create(Cart)
+    createCart = (products = []) =>{
+        return cartModel.create({ type: products })
     }
 
-    updateCart = (id, Cart) =>{
-        return cartModel.findByIdAndUpdate(id, Cart)
+    updateCart = (id, cart) =>{
+        return cartModel.findByIdAndUpdate(id, {type: cart})
     }
 
     deleteCart = (id) =>{
@@ -25,8 +27,28 @@ export default class CartsManager{
     addProductToCart = (idCart, idProduct, quantity) =>{
         cartModel.findById(idCart)
         .then(cart => {
-            cart.products.push({product: idProduct, quantity})
+            cart.type.push({product: idProduct, quantity})
             return cart.save()
         })
+    }
+
+    deleteProduct = (ids) =>{
+        cartModel.findById(ids.cid)
+        .then(cart => {
+            const productIndex = cart.type.findIndex(product => product === ids.pid)
+            cart.type.splice(productIndex, 1)
+            return cart.save()
+        })
+    }
+
+    updateProductQuantity = (ids, quantity) =>{
+        return cartModel.findOneAndUpdate(
+            { _id: ids.cid, "type.product": ids.pid },
+            { $set: { "type.$.quantity": quantity } },
+            { new: true }
+    )}
+
+    deleteProducts = (id) =>{
+        return cartModel.findByIdAndUpdate(id, { type: [] })
     }
 }
