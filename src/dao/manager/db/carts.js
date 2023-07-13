@@ -1,5 +1,4 @@
 import cartModel from "../../models/cart.js"
-import productModel from "../../models/product.js"
 
 export default class CartsManager{
 
@@ -9,7 +8,7 @@ export default class CartsManager{
 
     getCart = (id) =>{
         return cartModel.findById(id)
-        .populate("type.product", "_id title descritpon price")
+        .populate("type.product", "_id title description price")
     }
 
     createCart = (products = []) =>{

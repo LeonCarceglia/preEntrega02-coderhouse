@@ -1,16 +1,30 @@
 <h1>Products</h1>
 
-{{#each products}}
-<p>{{this.title}}</p>
-<button onclick="agregarAlCarrito()">Agregar al carrito</button>
-<br/>
-{{/each}}
+<ul>
+  {{#each products}}
+    <p>--------------------------------------------------</p>
+    <li>
+      <p>Title: {{title}}</p>
+      <p>Description: {{description}}</p>
+      <p>Price: {{price}}</p>
+      <p>Category: {{category}}</p>
+      <p>Quantity: {{stock}}</p>
+      <button onclick=addToCart({{this._id}}, {{this.stock}})>Add to Cart</button>
+    </li>
+  {{/each}}
+</ul>
+
 {{#if hasPrevPage}}
-<a href="/?page={{prevPage}}"><button>Anterior</button></a>
+  <a href="?page={{prevPage}}">
+    <button>Previous</button>
+  </a>
 {{/if}}
 
-{{page}}
+Actual page: {{page}}
 
 {{#if hasNextPage}}
-<a href="/?page={{nextPage}}"><button>Siguiente</button></a>
+  <a href="?page={{nextPage}}">
+    <button>Next</button>
+  </a>
 {{/if}}
+<script src="/routes/views.router.js"></script>
