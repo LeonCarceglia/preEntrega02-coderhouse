@@ -8,8 +8,6 @@ const productManager = new ProductsManager()
 
 router.get("/products", async (req, res)=> {
   const products = await productManager.getProductsRender()
-  const cart = await cartManager.createCart()
-  const cartId = cart._id.toString() 
   const productsRender = products.docs.map((item) => {
     return {
       title: item.title,
@@ -18,7 +16,6 @@ router.get("/products", async (req, res)=> {
       category: item.category,
       stock: item.stock,
       _id: item._id,
-      idCart: cartId
     }
   })
   res.render("products", {products: productsRender})
