@@ -1,23 +1,15 @@
-  <h1>Cart Products</h1>
-  
-  {{#if cart}}
-    <ul>
-      {{#each cart}}
-        <li>{{title}}</li>
-        <li>{{description}}</li>
-        <li>{{price}}</li>
-      {{/each}}
-    </ul>
-  {{else}}
-    <p>No products in cart: {{cart._id}}</p>
-  {{/if}}
+<h1>Cart Products</h1>
 
-  {{#if hasPrevPage}}
-    <a href="/carts/{{cart._id}}?page={{prevPage}}">Prev page</a>
-  {{/if}}
-  
-  {{#if hasNextPage}}
-    <a href="/carts/{{cart._id}}?page={{nextPage}}">Next page</a>
-  {{/if}}
-  
-  <p>Actual page: {{page}}</p>
+{{#if cart}}
+  <ul>
+    {{#each cart}}
+      <p>--------------------------------------------------</p>
+      <li>{{this.product.title}}</li>
+      <li>{{this.product.description}}</li>
+      <li>{{this.product.price}}</li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No products in cart.</p>
+{{/if}}
+

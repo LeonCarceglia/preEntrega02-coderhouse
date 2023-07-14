@@ -9,6 +9,7 @@ export default class CartsManager{
     getCart = (id) =>{
         return cartModel.findById(id)
         .populate("type.product", "_id title description price")
+        .lean()
     }
 
     createCart = (products = []) =>{
@@ -50,4 +51,5 @@ export default class CartsManager{
     deleteProducts = (id) =>{
         return cartModel.findByIdAndUpdate(id, { type: [] })
     }
+
 }

@@ -9,22 +9,9 @@
       <p>Price: {{price}}</p>
       <p>Category: {{category}}</p>
       <p>Quantity: {{stock}}</p>
-      <button onclick=addToCart({{this._id}}, {{this.stock}})>Add to Cart</button>
+      <button class="addToCartButton" data-cart-id="{{this.idCart}}" data-product-id="{{this._id}}" data-quantity="{{this.stock}}">Add to Cart</button>
     </li>
   {{/each}}
 </ul>
 
-{{#if hasPrevPage}}
-  <a href="?page={{prevPage}}">
-    <button>Previous</button>
-  </a>
-{{/if}}
-
-Actual page: {{page}}
-
-{{#if hasNextPage}}
-  <a href="?page={{nextPage}}">
-    <button>Next</button>
-  </a>
-{{/if}}
-<script src="/routes/views.router.js"></script>
+<script src="/js/productsRender.js" type="module"></script>
